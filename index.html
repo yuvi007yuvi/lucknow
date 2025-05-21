@@ -4,292 +4,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bulk Collection Report </title>
-    <style>
-        :root {
-            --primary-color: #0095e5;
-            --secondary-color: #ef4444;
-            --background-light: #ffffff;
-            --surface-light: #ffffff;
-            --text-color: #1f2937;
-            --border-color: #e5e7eb;
-        }
-
-        body {
-            font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-            margin: 0;
-            background-color: var(--background-light);
-            color: var(--text-color);
-            min-height: 100vh;
-            background: var(--background-light);
-        }
-
-        .container {
-            background-color: var(--surface-light);
-            padding: 40px;
-            border-radius: 24px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            margin: 40px auto;
-            max-width: 1400px;
-            border: 1px solid var(--border-color);
-            animation: fadeIn 0.6s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        h1 {
-            color: var(--text-color);
-            text-align: center;
-            margin-bottom: 40px;
-            font-size: 3em;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            background: var(--primary-color);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: titleGlow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes titleGlow {
-            from {
-                text-shadow: 0 0 20px rgba(108, 99, 255, 0.5);
-            }
-
-            to {
-                text-shadow: 0 0 30px rgba(255, 107, 107, 0.5);
-            }
-        }
-
-        .controls {
-            margin-bottom: 30px;
-            text-align: right;
-        }
-
-        .print-btn {
-            background: var(--primary-color);
-            color: white;
-            padding: 14px 32px;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 20px rgba(108, 99, 255, 0.2);
-        }
-
-        .print-btn:hover, .upload-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.3);
-        }
-
-        .upload-controls {
-            margin-top: 20px;
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .upload-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .file-input {
-            padding: 8px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background: white;
-            color: var(--text-color);
-        }
-
-        .upload-btn {
-            background: var(--primary-color);
-            color: white;
-            padding: 14px 32px;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 20px rgba(79, 70, 229, 0.2);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            margin-bottom: 20px;
-            animation: slideIn 0.8s ease-out;
-            position: relative;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        th,
-        td {
-            padding: 16px;
-            text-align: left;
-        }
-
-        thead {
-            position: sticky;
-            top: 0;
-            z-index: 1;
-        }
-
-        th {
-            background: var(--primary-color);
-            color: white;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border: none;
-            padding: 20px 16px;
-            position: relative;
-        }
-
-        th:not(:last-child):after {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 25%;
-            height: 50%;
-            width: 1px;
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        tr {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        td {
-            background-color: var(--surface-light);
-            border-bottom: 1px solid var(--border-color);
-            transition: all 0.3s ease;
-            padding: 20px 16px;
-        }
-
-        tbody tr:nth-child(even) td {
-            background-color: rgba(0, 149, 229, 0.05);
-        }
-
-        td:first-child {
-            padding-left: 24px;
-        }
-
-        td:last-child {
-            padding-right: 24px;
-        }
-
-        tbody tr:hover td {
-            background-color: rgba(0, 149, 229, 0.1);
-        }
-
-        img {
-            max-width: 120px;
-            height: auto;
-            border-radius: 12px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            object-fit: cover;
-        }
-
-        img:hover {
-            transform: scale(1.15);
-            box-shadow: 0 8px 24px rgba(108, 99, 255, 0.2);
-        }
-
-        @media print {
-            .controls {
-                display: none;
-            }
-
-            body {
-                margin: 0;
-                padding: 20px;
-                background: white !important;
-                color: black !important;
-            }
-
-            .container {
-                box-shadow: none;
-                padding: 0;
-                background: white !important;
-                border: none;
-                margin: 0;
-            }
-
-            table {
-                font-size: 12px;
-                border-spacing: 0;
-            }
-
-            th {
-                background: #f0f0f0 !important;
-                color: black !important;
-                border: 1px solid #ddd;
-            }
-
-            td {
-                background: white !important;
-                border: 1px solid #ddd;
-            }
-
-            h1 {
-                color: black !important;
-                -webkit-text-fill-color: black !important;
-            }
-        }
-    </style>
+    <title>Bulk Collection Report</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <div class="container">
-        <h1>Bulk Collection Data</h1>
-        <div class="controls">
-            <button class="print-btn" onclick="window.print()">Print Report</button>
-            <div class="upload-controls">
-                <div class="upload-group">
-                    <label for="csvFile">Upload CSV:</label>
-                    <input type="file" id="csvFile" accept=".csv" class="file-input">
-                    <button class="upload-btn" onclick="handleCSVUpload()">Upload CSV</button>
+    <div class="container mt-5">
+        <CENTER>
+            <h1 class="mb-4">Bulk Collection Report</h1>
+        </CENTER>
+
+        <div class="controls mb-4">
+            <button class="print-btn btn btn-primary me-2" onclick="window.print()">Print Report</button>
+            <BR>
+            <BR>
+
+            <div class="upload-controls d-flex align-items-center">
+                <div class="upload-group input-group">
+                    <input type="file" id="csvFile" accept=".csv" class="form-control">
+                    <button class="upload-btn btn btn-primary" onclick="handleCSVUpload()">Upload CSV</button>
                 </div>
             </div>
         </div>
-        <table id="dataTable">
-            <thead>
+
+        <div class="filter-controls mb-4 d-flex flex-wrap gap-2">
+            <button class="filter-btn btn btn-primary" onclick="filterData('completed')">Completed</button>
+            <button class="filter-btn btn btn-primary" onclick="filterData('pending')">Pending</button>
+            <button class="filter-btn btn btn-primary" onclick="filterData('all')">All</button>
+
+
+        </div>
+
+        <table id="dataTable" class="table table-dark table-striped table-hover">
+            <thead class="table-primary">
                 <tr>
                     <th>QR Code ID</th>
                     <th>Feedback</th>
@@ -304,14 +52,19 @@
                     <th>Ward</th>
                 </tr>
             </thead>
-            <tbody></tbody>
+            <tbody class="table-group-divider"></tbody>
         </table>
     </div>
+
     <script>
+        window.onload = function () {
+            document.querySelector('tbody').innerHTML = '';
+        };
+
         async function handleCSVUpload() {
             const fileInput = document.getElementById('csvFile');
             const file = fileInput.files[0];
-            
+
             if (!file) {
                 alert('Please select a CSV file');
                 return;
@@ -324,7 +77,7 @@
 
             try {
                 const reader = new FileReader();
-                reader.onload = function(event) {
+                reader.onload = function (event) {
                     const csvData = event.target.result;
                     displayCSVData(csvData);
                 };
@@ -341,7 +94,6 @@
                 const tbody = document.querySelector('tbody');
                 tbody.innerHTML = ''; // Clear existing data
 
-                // Skip header row
                 for (let i = 1; i < rows.length; i++) {
                     if (!rows[i].trim()) continue;
                     const columns = rows[i].split(',');
@@ -354,6 +106,7 @@
                                 const img = document.createElement('img');
                                 img.src = col;
                                 img.alt = 'Collection Image';
+                                img.style.width = '100px'; // Optional: resize for readability
                                 cell.appendChild(img);
                             } else {
                                 cell.textContent = 'N/A';
@@ -372,12 +125,29 @@
             }
         }
 
-        // Clear table initially
-        window.onload = function() {
-            const tbody = document.querySelector('tbody');
-            tbody.innerHTML = '';
-        };
+        function filterData(status) {
+            const rows = document.querySelectorAll('#dataTable tbody tr');
+            rows.forEach(row => {
+                const beforeImage = row.children[7]?.textContent || row.children[7]?.querySelector('img');
+                const afterImage = row.children[8]?.textContent || row.children[8]?.querySelector('img');
+                let isCompleted = beforeImage && afterImage && beforeImage !== 'N/A' && afterImage !== 'N/A';
+
+                switch (status) {
+                    case 'completed':
+                        row.style.display = isCompleted ? '' : 'none';
+                        break;
+                    case 'pending':
+                        row.style.display = !isCompleted ? '' : 'none';
+                        break;
+                    default:
+                        row.style.display = '';
+                }
+            });
+        }
+
+
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
